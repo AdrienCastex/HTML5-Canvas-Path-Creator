@@ -1,0 +1,16 @@
+{
+  "name": "html5-canvas-path-creator",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dev": "cd src && tsc --declaration -w",
+    "build": "cd src && tsc --declaration"
+  },
+  "author": "Adrien Castex <adrien.castex@protonmail.com>",
+  "license": "Unlicense",
+  "devDependencies": {
+    "@types/bootstrap": "^4.3.1",
+    "@types/jquery": "^3.3.31",
+    "@types/node": "^12.12.11"
+  }
+}

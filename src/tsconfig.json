@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+      "module": "system",
+      "noImplicitAny": false,
+      "removeComments": false,
+      "preserveConstEnums": true,
+      "typeRoots": [
+        "../node_modules/@types"
+      ],
+      "moduleResolution": "node",
+      "target": "ES5",
+      "outFile": "../docs/index.js"
+    }
+}

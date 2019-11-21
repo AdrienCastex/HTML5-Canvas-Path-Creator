@@ -1,0 +1,150 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/open-iconic/1.1.1/font/css/open-iconic.min.css">
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+        <style>
+            .no-selection {
+                -webkit-user-select: none; /* webkit (safari, chrome) browsers */
+                -moz-user-select: none; /* mozilla browsers */
+                -khtml-user-select: none; /* webkit (konqueror) browsers */
+                -ms-user-select: none; /* IE10+ */
+            }
+
+            .custom-checkbox,
+            .custom-checkbox * {
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body class="container">
+        <h1 class="mb-3">
+            HTML5 Canvas Path online creator
+        </h1>
+        <div class="row mb-3">
+            <div class="col-sm-6 card" style="height: 210px; overflow-y: auto">
+                <div class="card-body">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="autoCloseShape">
+                        <label class="custom-control-label" for="autoCloseShape">Automaticaly close the shape</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="showDots">
+                        <label class="custom-control-label" for="showDots">Show points</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="fillShape">
+                        <label class="custom-control-label" for="fillShape">Fill the shape</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="wrapJS">
+                        <label class="custom-control-label" for="wrapJS">Wrap the JS produced</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="keepBezierCursorsAligned">
+                        <label class="custom-control-label" for="keepBezierCursorsAligned">Keep bezier cursors aligned</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="hideBackgroundImage">
+                        <label class="custom-control-label" for="hideBackgroundImage">Hide the background image</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="showConstructionDotsOnLastClickedPointOnly">
+                        <label class="custom-control-label" for="showConstructionDotsOnLastClickedPointOnly">Show construction cursors on last clicked point only</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="reverseX">
+                        <label class="custom-control-label" for="reverseX">Reverse X</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="reverseY">
+                        <label class="custom-control-label" for="reverseY">Reverse Y</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="input-group mb-3">
+                    <input id="url" type="text" class="form-control" placeholder="https://url/to/image.jpg">
+                    <div class="input-group-append">
+                        <button id="load-image" class="btn btn-outline-secondary" type="button">
+                            Load image
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-12 mb-3">
+                        <select id="currentType" class="form-control" style="overflow: hidden" multiple>
+                            <option value="1">BEZIER_CURVE</option>
+                            <option value="4">QUADRATIC_CURVE</option>
+                            <option value="2">LINE</option>
+                            <option value="3">MOVE</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-6 col-md-12 mb-3">
+                        <select id="clickType" class="form-control" style="overflow: hidden" multiple>
+                            <option value="1">ADD / MOVE</option>
+                            <option value="2">REMOVE</option>
+                            <option value="3">MOVE</option>
+                        </select>
+                    </div>
+                    <div class="input-group col-lg-6 col-md-12 mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">Points size</span>
+                        </div>
+                        <input id="precision" type="number" value="10" class="form-control">
+                        <div class="input-group-append">
+                            <span class="input-group-text">px</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-12 mb-3 btn-group" role="group">
+                        <button type="button" class="btn btn-outline-secondary" id="backInHistory" data-content="Undo" data-toggle="popover"><span class="oi" data-glyph="action-undo"></span></button>
+                        <button type="button" class="btn btn-outline-secondary" id="forewardInHistory" data-content="Redo" data-toggle="popover"><span class="oi" data-glyph="action-redo"></span></button>
+                        <button type="button" class="btn btn-outline-secondary" id="clear" data-content="Clear all points" data-toggle="popover"><span class="oi" data-glyph="trash"></span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="text-align: center" class="mb-4">
+            <div style="display: inline-block">
+                <canvas class="no-selection card" id="canvas" width="1000" height="500" style="max-width: 100%"></canvas>
+                <div class="row">
+                    <div class="col-lg-6" style="text-align: left">
+                        <div style="display: inline-block" id="current-location" data-content="Current position on the canvas" data-toggle="popover">(0, 0)</div>
+                    </div>
+                    <div class="col-lg-6" style="text-align: right">
+                        <div style="display: inline-block" id="last-location" data-content="Position of the last click or the last selected point on the canvas" data-toggle="popover">(0, 0)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="jumbotron" style="padding-top: 32px; padding-bottom: 32px">
+            <h1 class="display-4">Explainations</h1>
+            <p class="lead">
+                <span class="badge badge-secondary">Double click</span> on a bezier construction cursor will align the other cursor of the same point to the opposite side.
+            </p>
+            <p class="lead">
+                <span class="badge badge-secondary">Shift + left click</span> will allow to select a point without creating a new point if a miss click is made. It lasts until the ctrl key is released.
+            </p>
+            <p class="lead">
+                <span class="badge badge-secondary">Ctrl + left click</span> will allow to double click on a point (useful for bezier construction cursors) without taking the risk to move the point. It is useful for bezier construction cursors and to select points when using the mode only selected points have construction cursors displayed.
+            </p>
+            <p class="lead">
+                <span class="badge badge-secondary">Shift + left click</span> while moving the a bezier construction cursor will allow to adjust the distance without changing the the angle.
+            </p>
+        </div>
+        <div style="text-align: center; margin-top: 15px">
+            <textarea readonly placeholder="Javascript produced for the drawn path. Waiting for a drawing..." class="form-control" style="width: 100%; height: 500px" id="js"></textarea>
+        </div>
+        <footer class="page-footer font-small">
+            <div class="footer-copyright text-center py-3">
+                Adrien Castex - <a href="">GitHub</a>
+            </div>
+        </footer>
+        
+        <script src="index.js"></script>
+    </body>
+</html>
