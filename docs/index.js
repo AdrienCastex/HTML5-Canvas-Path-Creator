@@ -5,19 +5,48 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
             r[k] = a[j];
     return r;
 };
-var PointType;
-(function (PointType) {
-    PointType[PointType["BEZIER_CURVE"] = 1] = "BEZIER_CURVE";
-    PointType[PointType["QUADRATIC_CURVE"] = 4] = "QUADRATIC_CURVE";
-    PointType[PointType["LINE"] = 2] = "LINE";
-    PointType[PointType["MOVE"] = 3] = "MOVE";
-})(PointType || (PointType = {}));
 var ClickType;
 (function (ClickType) {
     ClickType[ClickType["ADD"] = 1] = "ADD";
     ClickType[ClickType["REMOVE"] = 2] = "REMOVE";
     ClickType[ClickType["MOVE"] = 3] = "MOVE";
 })(ClickType || (ClickType = {}));
+var HistoryManager = /** @class */ (function () {
+    function HistoryManager(maxHistorySize) {
+        if (maxHistorySize === void 0) { maxHistorySize = 30; }
+        this.history = [];
+        this.historyPtr = undefined;
+        this.historyForeward = [];
+        this.maxHistorySize = maxHistorySize;
+    }
+    HistoryManager.prototype.storeInHistory = function (value) {
+        this.historyForeward = [];
+        if (this.historyPtr) {
+            this.history.push(this.historyPtr);
+        }
+        this.historyPtr = deepClone(value);
+        while (this.history.length > this.maxHistorySize) {
+            this.history.shift();
+        }
+    };
+    HistoryManager.prototype.backInHistory = function () {
+        if (this.history.length > 0) {
+            this.historyForeward.push(this.historyPtr);
+            var result = this.history.pop();
+            this.historyPtr = deepClone(result);
+            return result;
+        }
+    };
+    HistoryManager.prototype.forewardInHistory = function () {
+        if (this.historyForeward.length > 0) {
+            this.history.push(this.historyPtr);
+            var result = this.historyForeward.pop();
+            this.historyPtr = deepClone(result);
+            return result;
+        }
+    };
+    return HistoryManager;
+}());
 var Options = /** @class */ (function () {
     function Options() {
         this.autoCloseShape = false;
@@ -34,38 +63,13 @@ var Options = /** @class */ (function () {
     }
     return Options;
 }());
-/**
- * @see https://stackoverflow.com/a/40293777
- */
-function deepClone(obj, hash) {
-    if (hash === void 0) { hash = new WeakMap(); }
-    // Do not try to clone primitives or functions
-    if (Object(obj) !== obj || obj instanceof Function)
-        return obj;
-    if (hash.has(obj))
-        return hash.get(obj); // Cyclic reference
-    try { // Try to run constructor (without arguments, as we don't know them)
-        var result = new obj.constructor();
-    }
-    catch (e) { // Constructor failed, create object without running the constructor
-        result = Object.create(Object.getPrototypeOf(obj));
-    }
-    // Optional: support for some standard constructors (extend as desired)
-    if (obj instanceof Map)
-        Array.from(obj, function (_a) {
-            var key = _a[0], val = _a[1];
-            return result.set(deepClone(key, hash), deepClone(val, hash));
-        });
-    else if (obj instanceof Set)
-        Array.from(obj, function (key) { return result.add(deepClone(key, hash)); });
-    // Register in hash    
-    hash.set(obj, result);
-    // Clone and assign enumerable own properties recursively
-    return Object.assign.apply(Object, __spreadArrays([result], Object.keys(obj).map(function (key) {
-        var _a;
-        return (_a = {}, _a[key] = deepClone(obj[key], hash), _a);
-    })));
-}
+var PointType;
+(function (PointType) {
+    PointType[PointType["BEZIER_CURVE"] = 1] = "BEZIER_CURVE";
+    PointType[PointType["QUADRATIC_CURVE"] = 4] = "QUADRATIC_CURVE";
+    PointType[PointType["LINE"] = 2] = "LINE";
+    PointType[PointType["MOVE"] = 3] = "MOVE";
+})(PointType || (PointType = {}));
 var Program = /** @class */ (function () {
     function Program() {
         this.points = [];
@@ -524,42 +528,38 @@ var Program = /** @class */ (function () {
     };
     return Program;
 }());
-var HistoryManager = /** @class */ (function () {
-    function HistoryManager(maxHistorySize) {
-        if (maxHistorySize === void 0) { maxHistorySize = 30; }
-        this.history = [];
-        this.historyPtr = undefined;
-        this.historyForeward = [];
-        this.maxHistorySize = maxHistorySize;
+/**
+ * @see https://stackoverflow.com/a/40293777
+ */
+function deepClone(obj, hash) {
+    if (hash === void 0) { hash = new WeakMap(); }
+    // Do not try to clone primitives or functions
+    if (Object(obj) !== obj || obj instanceof Function)
+        return obj;
+    if (hash.has(obj))
+        return hash.get(obj); // Cyclic reference
+    try { // Try to run constructor (without arguments, as we don't know them)
+        var result = new obj.constructor();
     }
-    HistoryManager.prototype.storeInHistory = function (value) {
-        this.historyForeward = [];
-        if (this.historyPtr) {
-            this.history.push(this.historyPtr);
-        }
-        this.historyPtr = deepClone(value);
-        while (this.history.length > this.maxHistorySize) {
-            this.history.shift();
-        }
-    };
-    HistoryManager.prototype.backInHistory = function () {
-        if (this.history.length > 0) {
-            this.historyForeward.push(this.historyPtr);
-            var result = this.history.pop();
-            this.historyPtr = deepClone(result);
-            return result;
-        }
-    };
-    HistoryManager.prototype.forewardInHistory = function () {
-        if (this.historyForeward.length > 0) {
-            this.history.push(this.historyPtr);
-            var result = this.historyForeward.pop();
-            this.historyPtr = deepClone(result);
-            return result;
-        }
-    };
-    return HistoryManager;
-}());
+    catch (e) { // Constructor failed, create object without running the constructor
+        result = Object.create(Object.getPrototypeOf(obj));
+    }
+    // Optional: support for some standard constructors (extend as desired)
+    if (obj instanceof Map)
+        Array.from(obj, function (_a) {
+            var key = _a[0], val = _a[1];
+            return result.set(deepClone(key, hash), deepClone(val, hash));
+        });
+    else if (obj instanceof Set)
+        Array.from(obj, function (key) { return result.add(deepClone(key, hash)); });
+    // Register in hash    
+    hash.set(obj, result);
+    // Clone and assign enumerable own properties recursively
+    return Object.assign.apply(Object, __spreadArrays([result], Object.keys(obj).map(function (key) {
+        var _a;
+        return (_a = {}, _a[key] = deepClone(obj[key], hash), _a);
+    })));
+}
 $(function () {
     var program = new Program();
     program.initialize();

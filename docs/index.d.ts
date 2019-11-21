@@ -1,27 +1,19 @@
 /// <reference types="jquery" />
 /// <reference types="bootstrap" />
-declare enum PointType {
-    BEZIER_CURVE = 1,
-    QUADRATIC_CURVE = 4,
-    LINE = 2,
-    MOVE = 3
-}
 declare enum ClickType {
     ADD = 1,
     REMOVE = 2,
     MOVE = 3
 }
-interface RootPoint extends Point {
-    type: PointType;
-}
-interface Point {
-    x: number;
-    y: number;
-    relativeTo?: Point;
-    c1?: Point;
-    c2?: Point;
-    c3?: Point;
-    type?: PointType;
+declare class HistoryManager<T> {
+    constructor(maxHistorySize?: number);
+    protected maxHistorySize: number;
+    protected history: T[];
+    protected historyPtr: T;
+    protected historyForeward: T[];
+    storeInHistory(value: T): void;
+    backInHistory(): T;
+    forewardInHistory(): T;
 }
 declare class Options {
     autoCloseShape: boolean;
@@ -36,10 +28,21 @@ declare class Options {
     drawingColor: string;
     subDrawingColor: string;
 }
-/**
- * @see https://stackoverflow.com/a/40293777
- */
-declare function deepClone(obj: any, hash?: WeakMap<object, any>): any;
+interface Point {
+    x: number;
+    y: number;
+    relativeTo?: Point;
+    c1?: Point;
+    c2?: Point;
+    c3?: Point;
+    type?: PointType;
+}
+declare enum PointType {
+    BEZIER_CURVE = 1,
+    QUADRATIC_CURVE = 4,
+    LINE = 2,
+    MOVE = 3
+}
 declare class Program {
     constructor();
     protected points: Point[];
@@ -71,13 +74,10 @@ declare class Program {
     protected removePoint(point: Point, useInstance?: boolean): Point;
     protected static alignBezierCursor(cursorPoint: Point): boolean;
 }
-declare class HistoryManager<T> {
-    constructor(maxHistorySize?: number);
-    protected maxHistorySize: number;
-    protected history: T[];
-    protected historyPtr: T;
-    protected historyForeward: T[];
-    storeInHistory(value: T): void;
-    backInHistory(): T;
-    forewardInHistory(): T;
+interface RootPoint extends Point {
+    type: PointType;
 }
+/**
+ * @see https://stackoverflow.com/a/40293777
+ */
+declare function deepClone(obj: any, hash?: WeakMap<object, any>): any;
