@@ -18,3 +18,4 @@ Thank you, GitHub, for hosting it.
 - [ ] Manage the size and the position of the background image
 - [ ] Options for colors (if the background image is black, the black points will be hard to see)
 - [ ] Allow to select multiple points to move more at once (add the `SELECT/MOVE` tool)
+- [ ] Clean up the code (explode the file `src/index.ts` into multiple files)
