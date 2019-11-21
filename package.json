@@ -12,5 +12,10 @@
     "@types/bootstrap": "^4.3.1",
     "@types/jquery": "^3.3.31",
     "@types/node": "^12.12.11"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AdrienCastex/HTML5-Canvas-Path-Creator"
+  },
+  "homepage": "https://adriencastex.github.io/HTML5-Canvas-Path-Creator/"
 }
