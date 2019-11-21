@@ -19,3 +19,7 @@ Thank you, GitHub, for hosting it.
 - [ ] Options for colors (if the background image is black, the black points will be hard to see)
 - [ ] Allow to select multiple points to move more at once (add the `SELECT/MOVE` tool)
 - [ ] Clean up the code (explode the file `src/index.ts` into multiple files)
+
+## Rebuild
+
+If you wish to clone the project and make your own changes, you will be able to recompile the TS file with `npm run build`, or `npm run dev`. Be sure to have `typescript` (`npm i -g typescript`) and the dependencies (`npm i`) installed.
