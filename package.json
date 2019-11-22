@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "dev": "cd src && tsc --declaration -w",
-    "build": "cd src && tsc --declaration"
+    "dev": "cd src && tsc -w",
+    "build": "cd src && tsc"
   },
   "author": "Adrien Castex <adrien.castex@protonmail.com>",
   "license": "Unlicense",
