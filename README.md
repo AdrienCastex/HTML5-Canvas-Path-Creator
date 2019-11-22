@@ -19,6 +19,7 @@ Thank you, GitHub, for hosting it.
 - [ ] Options for colors (if the background image is black, the black points will be hard to see)
 - [ ] Allow to select multiple points to move more at once (add the `SELECT/MOVE` tool)
 - [x] Clean up the code (explode the file `src/index.ts` into multiple files)
+- [ ] Add a button to switch between producing JavaScript or TypeScript
 
 ## Rebuild
 
