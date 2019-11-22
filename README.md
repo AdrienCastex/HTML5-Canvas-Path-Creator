@@ -23,4 +23,4 @@ Thank you, GitHub, for hosting it.
 
 ## Rebuild
 
-If you wish to clone the project and make your own changes, you will be able to recompile the TS file with `npm run build`, or `npm run dev`. Be sure to have `typescript` (`npm i -g typescript`) and the dependencies (`npm i`) installed.
+If you wish to clone the project and make your own changes, you will be able to recompile the TS file with `npm run build`, or `npm run dev`. Be sure to have the dependencies (`npm i`) installed.
