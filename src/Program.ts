@@ -83,13 +83,30 @@ class Program {
         $('#load-image').on('click', () => {
             const url = $('#url').val().toString();
 
-            if(url) {
-                const img = new Image();
+            const load = (img) => {
                 img.onload = () => {
                     this.bgImg = img;
                     this.redraw();
                 };
+            }
+
+            if(url) {
+                const img = new Image();
+                load(img);
                 img.src = url;
+            } else {
+                const $urlFile =  $('#url-file') as JQuery<HTMLInputElement>;
+                const files = $urlFile[0].files;
+
+                if(files && files[0]) {
+                    const fileReader = new FileReader();
+                    fileReader.onload = (event) => {
+                        const img = new Image();
+                        load(img);
+                        img.src = event.target.result as string;
+                    }
+                    fileReader.readAsDataURL(files[0]);
+                }
             }
         })
         

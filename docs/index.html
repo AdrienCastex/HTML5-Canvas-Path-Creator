@@ -33,6 +33,10 @@
             .custom-checkbox * {
                 cursor: pointer;
             }
+
+            .custom-file-label.no-btn:after {
+                display: none;
+            }
         </style>
     </head>
     <body class="container">
@@ -83,6 +87,12 @@
             <div class="col-sm-6">
                 <div class="input-group mb-3">
                     <input id="url" type="text" class="form-control" placeholder="https://url/to/image.jpg">
+                    <div class="custom-file" style="max-width: 50px">
+                        <input id="url-file" type="file" class="custom-file-input" placeholder="From disk">
+                        <label class="custom-file-label no-btn" for="id-file" style="text-align: center; padding-top: 10px">
+                            <span class="oi" data-glyph="file"></span>
+                        </label>
+                    </div>
                     <div class="input-group-append">
                         <button id="load-image" class="btn btn-outline-secondary" type="button">
                             Load image

@@ -135,13 +135,29 @@ var Program = /** @class */ (function () {
         $('#currentType').val(this.currentType);
         $('#load-image').on('click', function () {
             var url = $('#url').val().toString();
-            if (url) {
-                var img_1 = new Image();
-                img_1.onload = function () {
-                    _this.bgImg = img_1;
+            var load = function (img) {
+                img.onload = function () {
+                    _this.bgImg = img;
                     _this.redraw();
                 };
-                img_1.src = url;
+            };
+            if (url) {
+                var img = new Image();
+                load(img);
+                img.src = url;
+            }
+            else {
+                var $urlFile = $('#url-file');
+                var files = $urlFile[0].files;
+                if (files && files[0]) {
+                    var fileReader = new FileReader();
+                    fileReader.onload = function (event) {
+                        var img = new Image();
+                        load(img);
+                        img.src = event.target.result;
+                    };
+                    fileReader.readAsDataURL(files[0]);
+                }
             }
         });
         this.$canvas.on('dblclick', function (event) {
